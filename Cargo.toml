@@ -1,0 +1,9 @@
+[workspace]
+
+resolver = "2"
+
+members = [
+    "nsp_driver",
+    "nsp_core",
+    "nsp_kerr_schild_schwarzschild",
+]

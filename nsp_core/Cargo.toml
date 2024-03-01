@@ -1,0 +1,12 @@
+[package]
+name = "nsp_core"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+default = ["log_color"]
+log_color = []
+
+[dependencies]
+chrono = "0.4.34"
+nalgebra = "0.32.4"
