@@ -6,4 +6,4 @@ edition = "2021"
 [dependencies]
 chrono = "0.4.34"
 nsp_core = { path = "../nsp_core" }
-nsp_kerr_schild_schwarzschild = { path = "../nsp_kerr_schild_schwarzschild" }
+nsp_kerr_schild_kerr = { path = "../nsp_kerr_schild_kerr" }

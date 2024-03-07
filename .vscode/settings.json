@@ -1,0 +1,8 @@
+{
+    "rust-analyzer.inlayHints.chainingHints.enable": false,
+    "rust-analyzer.inlayHints.closingBraceHints.enable": false,
+    "rust-analyzer.inlayHints.typeHints.enable": false,
+    "rust-analyzer.inlayHints.renderColons": true,
+    "rust-analyzer.inlayHints.parameterHints.enable": false,
+    "editor.formatOnSave": true
+}

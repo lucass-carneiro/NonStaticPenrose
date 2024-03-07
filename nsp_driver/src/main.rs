@@ -1,11 +1,9 @@
 #![feature(thread_id_value)]
-use nsp_core::metric::SpacetimeMetric;
-use nsp_kerr_schild_schwarzschild::KerrSchildSchwarzschild;
+use nsp_core::time_step;
+use nsp_kerr_schild_kerr::KerrSchildKerr;
 
 fn main() {
-    let is = KerrSchildSchwarzschild::new(1.0);
-    nsp_core::log_info!("Hey! {}", is.alpha(0.0, 1.0, 1.0, 1.0));
-    nsp_core::log_info!("Hey! {}", is.d_alpha_dx(0.0, 1.0, 1.0, 1.0));
-    nsp_core::log_info!("Hey! {}", is.d_alpha_dy(0.0, 1.0, 1.0, 1.0));
-    nsp_core::log_info!("Hey! {}", is.d_alpha_dz(0.0, 1.0, 1.0, 1.0));
+    let ksk = KerrSchildKerr::new(1.0, 0.5).unwrap();
+    let h = time_step::compute_hamiltonian(ksk, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0).unwrap();
+    println!("H = {}", h);
 }

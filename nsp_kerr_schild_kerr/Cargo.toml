@@ -1,8 +1,9 @@
 [package]
-name = "nsp_kerr_schild_schwarzschild"
+name = "nsp_kerr_schild_kerr"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+chrono = "0.4.35"
 nalgebra = "0.32.4"
 nsp_core = { path = "../nsp_core" }
