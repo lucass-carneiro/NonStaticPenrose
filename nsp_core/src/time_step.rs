@@ -2,17 +2,29 @@ use crate::log_error;
 
 use crate::metric::SpacetimeMetric;
 
+pub struct State {
+    pub px: f64,
+    pub py: f64,
+    pub pz: f64,
+
+    pub x: f64,
+    pub y: f64,
+    pub z: f64,
+}
 pub fn compute_hamiltonian<T: SpacetimeMetric>(
-    sm: T,
+    sm: &T,
+    state: &State,
     m: f64,
-    px: f64,
-    py: f64,
-    pz: f64,
     t: f64,
-    x: f64,
-    y: f64,
-    z: f64,
 ) -> Result<f64, crate::error::Error> {
+    let px = state.px;
+    let py = state.py;
+    let pz = state.pz;
+
+    let x = state.x;
+    let y = state.y;
+    let z = state.z;
+
     let alpha = sm.alpha(t, x, y, z);
     let a2 = alpha * alpha;
     let beta_u = sm.beta_u(t, x, y, z);

@@ -34,7 +34,7 @@ fn r2(a: f64, x: f64, y: f64, z: f64) -> f64 {
     0.5 * rho2_m_a2 + (0.25 * rho2_m_a2 * rho2_m_a2 + a2_z2).sqrt()
 }
 
-fn h(a: f64, m: f64, x: f64, y: f64, z: f64) -> f64 {
+fn h(m: f64, a: f64, x: f64, y: f64, z: f64) -> f64 {
     let r_2 = r2(a, x, y, z);
     let r = r_2.sqrt();
     let r3 = r * r_2;
@@ -44,46 +44,44 @@ fn h(a: f64, m: f64, x: f64, y: f64, z: f64) -> f64 {
 }
 
 fn l_d(a: f64, x: f64, y: f64, z: f64) -> Vector3<f64> {
-    let r_2 = r2(a, x, y, z);
-    let r = r_2.sqrt();
-    let r2_p_a2 = r_2 + a * a;
-    Vector3::new((r * x + a * y) / r2_p_a2, (r * y - a * x) / r2_p_a2, z / r)
+    let r2_ = r2(a, x, y, z);
+    let r = r2_.sqrt();
+    let den = r2_ + a * a;
+
+    Vector3::new((r * x + a * y) / den, (r * y - a * x) / den, z / r)
+}
+
+fn l_dd(a: f64, x: f64, y: f64, z: f64) -> Matrix3<f64> {
+    let l = l_d(a, x, y, z);
+
+    Matrix3::new(
+        l[0] * l[0],
+        l[0] * l[1],
+        l[0] * l[2],
+        l[1] * l[0],
+        l[1] * l[1],
+        l[1] * l[2],
+        l[2] * l[0],
+        l[2] * l[1],
+        l[2] * l[2],
+    )
 }
 
 impl SpacetimeMetric for KerrSchildKerr {
     fn alpha(&self, _: f64, x: f64, y: f64, z: f64) -> f64 {
-        let hh = h(self.spin, self.mass, x, y, z);
-        let den = 1.0 / (1.0 + 2.0 * hh);
-        den.sqrt()
+        1.0 / (1.0 + 2.0 * h(self.mass, self.spin, x, y, z)).sqrt()
     }
 
     fn beta_u(&self, _: f64, x: f64, y: f64, z: f64) -> Vector3<f64> {
-        let hh = h(self.spin, self.mass, x, y, z);
-        let den = 1.0 + 2.0 * hh;
-        let prefactor = 2.0 * hh / den;
-        prefactor * l_d(self.spin, x, y, z)
+        let h_ = h(self.spin, self.mass, x, y, z);
+        (2.0 * h_ / (1.0 + 2.0 * h_)) * l_d(self.spin, x, y, z)
     }
 
     fn gamma_uu(&self, _: f64, x: f64, y: f64, z: f64) -> Matrix3<f64> {
-        let hh = h(self.spin, self.mass, x, y, z);
-        let den = 1.0 + 2.0 * hh;
-        let prefactor = 2.0 * hh / den;
-        let l = l_d(self.spin, x, y, z);
+        let h_ = h(self.mass, self.spin, x, y, z);
+        let eta_ij = Matrix3::identity();
+        let h_ij = (2.0 * h_ / (1.0 + 2.0 * h_)) * l_dd(self.spin, x, y, z);
 
-        let eta_ij = Matrix3::new(1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0);
-
-        let h_ij = Matrix3::new(
-            l[0] * l[0],
-            l[0] * l[1],
-            l[0] * l[2],
-            l[1] * l[0],
-            l[1] * l[1],
-            l[1] * l[2],
-            l[2] * l[0],
-            l[2] * l[1],
-            l[2] * l[2],
-        );
-
-        eta_ij - prefactor * h_ij
+        eta_ij - h_ij
     }
 }
