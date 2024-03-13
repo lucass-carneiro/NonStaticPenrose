@@ -2,6 +2,7 @@ use crate::log_error;
 
 use crate::metric::SpacetimeMetric;
 
+#[derive(Debug, Clone)]
 pub struct State {
     pub px: f64,
     pub py: f64,

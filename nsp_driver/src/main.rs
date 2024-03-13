@@ -15,7 +15,15 @@ fn main() {
     };
 
     let h = time_step::compute_hamiltonian(&ksk, &s, 1.0, 0.0).unwrap();
-    let hp = derivatives::fd_2(&ksk, &s, 1.0, 0.0, 1.0e-2).unwrap();
+    let hp = derivatives::fd_4(
+        &ksk,
+        &s,
+        1.0,
+        0.0,
+        derivatives::DerivativeComponent::X,
+        1.0e-3,
+    )
+    .unwrap();
 
     println!("H = {}", h);
     println!("dH/dpx = {}", hp);
