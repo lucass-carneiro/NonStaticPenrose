@@ -12,6 +12,7 @@ pub struct State {
     pub y: f64,
     pub z: f64,
 }
+
 pub fn compute_hamiltonian<T: SpacetimeMetric>(
     sm: &T,
     state: &State,

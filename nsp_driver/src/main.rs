@@ -1,5 +1,5 @@
 #![feature(thread_id_value)]
-use nsp_core::{derivatives, time_step};
+use nsp_core::{derivatives, derivatives::DerivativeComponent};
 use nsp_kerr_schild_kerr::KerrSchildKerr;
 
 fn main() {
@@ -14,17 +14,16 @@ fn main() {
         z: 1.0,
     };
 
-    let h = time_step::compute_hamiltonian(&ksk, &s, 1.0, 0.0).unwrap();
-    let hp = derivatives::fd_4(
-        &ksk,
-        &s,
-        1.0,
-        0.0,
-        derivatives::DerivativeComponent::X,
-        1.0e-3,
-    )
-    .unwrap();
-
-    println!("H = {}", h);
-    println!("dH/dpx = {}", hp);
+    println!(
+        "dH/dx = {}",
+        derivatives::fd_4(&ksk, &s, 1.0, 0.0, DerivativeComponent::X, 1.0e-2).unwrap()
+    );
+    println!(
+        "dH/dx = {}",
+        derivatives::fd_4(&ksk, &s, 1.0, 0.0, DerivativeComponent::Y, 1.0e-2).unwrap()
+    );
+    println!(
+        "dH/dx = {}",
+        derivatives::fd_4(&ksk, &s, 1.0, 0.0, DerivativeComponent::Z, 1.0e-2).unwrap()
+    );
 }
